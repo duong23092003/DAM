@@ -16,7 +16,9 @@
             $_SESSION['trangThai']=$trangThai;
             header('location: trangchu.php');
         }
-        if($role == 2)header('location: erro.php');
+        if($role == 2) {
+            array_push($err, 'User not available!');
+        };
     }
 ?>
 

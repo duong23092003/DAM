@@ -29,7 +29,7 @@
                             <td><?php echo $row['email']; ?></td>
                             <td><?php echo $row['ten']; ?></td>
                             <td><?php echo $row['diachi']; ?></td>
-                            <td><a class="btn btn-outline-primary m-2" href="xoanguoi.php?id=<?php echo $row['id']; ?>">Xóa</a></td>
+                            <td><a class="btn btn-outline-primary m-2" href="remove_user.php?id=<?php echo $row['id']; ?>">Xóa</a></td>
                         </tr>
                         
                     <?php } ?>

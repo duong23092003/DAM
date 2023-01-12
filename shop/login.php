@@ -1,3 +1,38 @@
+<?php
+$name_user = isset($_POST["email_user"]) ? $_POST["email_user"] : "";
+$pass_user = isset($_POST["pass_user"]) ? $_POST["pass_user"] : "";
+$err = [];
+if (isset($_POST['name_user'])) {
+    if ($name_user == "") {
+        array_push($err, 'Enter user name. Please!');
+    }
+    if ($pass_user == "") {
+        array_push($err, 'Enter paswword. Please!');
+    }
+}
+include "db.php";
+$conn = $db->connect();
+$sql = "SELECT * from user where user_email = '$user_name' and user_pass = '$user_pass'";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$numrows = $stmt->rowCount();
+// numrows == 1 : đúng username và mật khẩu => đăng nhập thành công
+$data = $conn->query($sql);
+$row = $data->fetch();
+if ($numrows == 1) {
+    $_SESSION['login']['id_user'] = $row['id'];
+    $_SESSION['login']['name_user'] = $row['user_name'];
+    $_SESSION['login']['pass_user'] = $row['user_pass'];
+    $_SESSION['login']['role'] = $row['role'];
+    // echo "Đăng nhập thành công";
+    if ($row['role'] == 0) {
+        echo "<meta http-equiv='refresh' content='0;url=../../pages/index.php'>";
+    } else if ($row['role'] == 1) {
+        echo "<meta http-equiv='refresh' content='0;url=index.php'>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +48,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -28,7 +63,7 @@
 <body>
 
 
-<div class="container">
+    <div class="container">
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -47,13 +82,10 @@
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input name="email" type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -94,22 +126,22 @@
 
 
 
-<!-- Back to Top -->
-<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-<!-- Contact Javascript File -->
-<script src="mail/jqBootstrapValidation.min.js"></script>
-<script src="mail/contact.js"></script>
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
 
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
 
 </html>
